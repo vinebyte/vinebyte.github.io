@@ -34,19 +34,23 @@
             const canvas = document.getElementById('qrCanvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
-            img.src = 'postimg.jpg'; // Ensure the image file is in the same directory
+            img.src = 'postimg.jpg'; // 确保图像文件在相同目录中
             img.onload = function () {
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // 清除画布
                 ctx.drawImage(img, 0, 0);
-                const qr = new QRCode(document.createElement('div'), {
+
+                const qrDiv = document.createElement('div');
+                new QRCode(qrDiv, {
                     text: url,
                     width: 150,
                     height: 150,
                     correctLevel: QRCode.CorrectLevel.H
                 });
+
                 setTimeout(() => {
-                    const qrCanvas = qr._oDrawing._elCanvas;
-                    ctx.drawImage(qrCanvas, 200, 150, 150, 150); // Adjust position and size accordingly
-                }, 500); // Slight delay to ensure QR code is drawn
+                    const qrCanvas = qrDiv.querySelector('canvas');
+                    ctx.drawImage(qrCanvas, 203, 134, 150, 150); // 调整位置和大小以覆盖原二维码
+                }, 500); // 确保二维码生成完成
             }
         }
     </script>
