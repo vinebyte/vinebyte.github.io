@@ -5,8 +5,9 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
 </head>
 <body>
-  <input type="text" id="refInput" placeholder="输入渠道id，例如0530pyq">
-  <button onclick="generateQRCode()">点击生成</button>
+  <input type="text" id="refInput" placeholder="输入推广id，如0531pyq">
+  <button onclick="generateQRCode()">生成二维码海报</button>
+  <button id="downloadButton" style="display:none;" onclick="downloadImage()">下载图片</button>
   <br><br>
   <canvas id="qrCodeCanvas" width="1560" height="1289"></canvas>
 
@@ -31,8 +32,8 @@
         ctx.drawImage(img, 0, 0);
 
         const qrCodeSize = 508;
-        const qrCodeX = 70;
-        const qrCodeY = 70;
+        const qrCodeX = 74;
+        const qrCodeY = 74;
 
         const qrCodeCanvas = document.createElement('canvas');
         qrCodeCanvas.width = qrCodeSize;
@@ -54,8 +55,19 @@
         }
 
         ctx.drawImage(qrCodeCanvas, qrCodeX, qrCodeY);
+
+        // 显示下载按钮
+        document.getElementById('downloadButton').style.display = 'inline';
       };
       img.src = 'erwemaa.jpg';  // 确保图片路径正确
+    }
+
+    function downloadImage() {
+      const canvas = document.getElementById('qrCodeCanvas');
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'qrcode_poster.png';
+      link.click();
     }
   </script>
 </body>
