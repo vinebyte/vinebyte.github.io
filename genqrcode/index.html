@@ -12,37 +12,43 @@
 
   <script>
     function generateQRCode() {
-      const refInput = document.getElementById('refInput');
-      const ref = refInput.value;
-      const baseURL = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa7e710795d5adeb3&redirect_uri=https%3A%2F%2Fh5.xiaoguai.net%2Flogin%2F%3Fref%3D';
-      const url = baseURL + encodeURIComponent(ref) + '&response_type=code&scope=snsapi_base#wechat_redirect';
-      
-      const typeNumber = 0;
-      const errorCorrectionLevel = 'L';
-      const qr = qrcode(typeNumber, errorCorrectionLevel);
-      qr.addData(url);
-      qr.make();
-      
-      const canvas = document.getElementById('qrCodeCanvas');
-      const ctx = canvas.getContext('2d');
-      
-      const img = new Image();
-      img.onload = function() {
-        ctx.drawImage(img, 0, 0);
-        
-        const qrCodeSize = 508;
-        const qrCodeX = 127;
-        const qrCodeY = 127;
-        
-        const qrCodeCanvas = document.createElement('canvas');
-        qrCodeCanvas.width = qrCodeSize;
-        qrCodeCanvas.height = qrCodeSize;
-        qr.renderTo2dContext(qrCodeCanvas.getContext('2d'), qrCodeSize);
-        
-        ctx.drawImage(qrCodeCanvas, qrCodeX, qrCodeY);
-      };
-      img.src = 'postimg.jpg';
-    }
+  const refInput = document.getElementById('refInput');
+  const ref = refInput.value;
+  const baseURL = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa7e710795d5adeb3&redirect_uri=https%3A%2F%2Fh5.xiaoguai.net%2Flogin%2F%3Fref%3D';
+  const url = baseURL + encodeURIComponent(ref) + '&response_type=code&scope=snsapi_base#wechat_redirect';
+  
+  const typeNumber = 0;
+  const errorCorrectionLevel = 'L';
+  const qr = qrcode(typeNumber, errorCorrectionLevel);
+  qr.addData(url);
+  qr.make();
+  
+  const canvas = document.getElementById('qrCodeCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  const img = new Image();
+  img.onload = function() {
+    ctx.drawImage(img, 0, 0);
+    
+    const qrCodeSize = 508;
+    const qrCodeX = 127;
+    const qrCodeY = 127;
+    
+    const qrCodeCanvas = document.createElement('canvas');
+    qrCodeCanvas.width = qrCodeSize;
+    qrCodeCanvas.height = qrCodeSize;
+    const qrCodeCtx = qrCodeCanvas.getContext('2d');
+    
+    // 设置二维码的颜色
+    const darkColor = '#000000';
+    const lightColor = '#FFFFFF';
+    
+    qr.renderTo2dContext(qrCodeCtx, qrCodeSize, darkColor, lightColor);
+    
+    ctx.drawImage(qrCodeCanvas, qrCodeX, qrCodeY);
+  };
+  img.src = 'postimg.jpg';
+}
   </script>
 </body>
 </html>
