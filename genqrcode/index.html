@@ -15,9 +15,7 @@
             background-color: #f0f0f0;
         }
         #qrCanvas {
-            position: absolute;
-            top: 150px;
-            left: 35px;
+            position: relative;
         }
     </style>
 </head>
@@ -36,20 +34,19 @@
             const canvas = document.getElementById('qrCanvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
-            img.src = '/qr/postimg.jpg';
+            img.src = 'postimg.jpg'; // Ensure the image file is in the same directory
             img.onload = function () {
                 ctx.drawImage(img, 0, 0);
-                const qr = new QRCode('qrCanvas', {
+                const qr = new QRCode(document.createElement('div'), {
                     text: url,
                     width: 150,
                     height: 150,
                     correctLevel: QRCode.CorrectLevel.H
                 });
-                qr._oDrawing._elCanvas.style.display = 'none';
-                const qrImg = qr._oDrawing._elImage;
-                qrImg.onload = function () {
-                    ctx.drawImage(qrImg, 35, 150, 150, 150); // Adjust the position based on your image
-                }
+                setTimeout(() => {
+                    const qrCanvas = qr._oDrawing._elCanvas;
+                    ctx.drawImage(qrCanvas, 200, 150, 150, 150); // Adjust position and size accordingly
+                }, 500); // Slight delay to ensure QR code is drawn
             }
         }
     </script>
