@@ -6,7 +6,7 @@
 </head>
 <body>
   <input type="text" id="refInput" placeholder="请输入ref信息">
-  <button onclick="generateQRCode()">生成投放二维码海报</button>
+  <button onclick="generateQRCode()">生成二维码海报</button>
   <br><br>
   <canvas id="qrCodeCanvas" width="1560" height="1289"></canvas>
 
@@ -17,7 +17,7 @@
       const baseURL = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa7e710795d5adeb3&redirect_uri=https%3A%2F%2Fh5.xiaoguai.net%2Flogin%2F%3Fref%3D';
       const url = baseURL + encodeURIComponent(ref) + '&response_type=code&scope=snsapi_base#wechat_redirect';
 
-      const typeNumber = 4;  // 设置二维码的版本号，0-40，越大可容纳的信息越多
+      const typeNumber = 10;  // 增加二维码的版本号
       const errorCorrectionLevel = 'L';  // 设置纠错等级
       const qr = qrcode(typeNumber, errorCorrectionLevel);
       qr.addData(url);
