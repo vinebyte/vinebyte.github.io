@@ -31,8 +31,8 @@
     ctx.drawImage(img, 0, 0);
     
     const qrCodeSize = 508;
-    const qrCodeX = 87;
-    const qrCodeY = 87;
+    const qrCodeX = 70;
+    const qrCodeY = 70;
     
     const qrCodeCanvas = document.createElement('canvas');
     qrCodeCanvas.width = qrCodeSize;
@@ -43,7 +43,12 @@
     const darkColor = '#000000';
     const lightColor = '#FFFFFF';
     
-    qr.renderTo2dContext(qrCodeCtx, qrCodeSize, darkColor, lightColor);
+    // 绘制白色背景
+    qrCodeCtx.fillStyle = lightColor;
+    qrCodeCtx.fillRect(0, 0, qrCodeSize, qrCodeSize);
+    
+    // 绘制黑色二维码
+    qr.renderTo2dContext(qrCodeCtx, qrCodeSize, darkColor);
     
     ctx.drawImage(qrCodeCanvas, qrCodeX, qrCodeY);
   };
