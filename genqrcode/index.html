@@ -5,8 +5,8 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
 </head>
 <body>
-  <input type="text" id="refInput" placeholder="请输入ref信息">
-  <button onclick="generateQRCode()">生成二维码海报</button>
+  <input type="text" id="refInput" placeholder="输入渠道id，例如0530pyq">
+  <button onclick="generateQRCode()">点击生成</button>
   <br><br>
   <canvas id="qrCodeCanvas" width="1560" height="1289"></canvas>
 
@@ -55,7 +55,7 @@
 
         ctx.drawImage(qrCodeCanvas, qrCodeX, qrCodeY);
       };
-      img.src = 'erwema.jpg';  // 确保图片路径正确
+      img.src = 'erwemaa.jpg';  // 确保图片路径正确
     }
   </script>
 </body>
