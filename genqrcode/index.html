@@ -1,58 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
-        #qrCanvas {
-            position: relative;
-        }
-    </style>
+  <title>生成二维码</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
 </head>
 <body>
-    <h1>QR Code Generator</h1>
-    <label for="refInput">Enter Reference:</label>
-    <input type="text" id="refInput" placeholder="xxxxx">
-    <button onclick="generateQRCode()">Generate QR Code</button>
-    <canvas id="qrCanvas" width="1560" height="1289"></canvas>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script>
-        function generateQRCode() {
-            const ref = document.getElementById('refInput').value;
-            const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa7e710795d5adeb3&redirect_uri=https%3A%2F%2Fh5.xiaoguai.net%2Flogin%2F%3Fref%3D${ref}&response_type=code&scope=snsapi_base#wechat_redirect`;
+  <input type="text" id="refInput" placeholder="请输入ref信息">
+  <button onclick="generateQRCode()">生成二维码</button>
+  <br><br>
+  <canvas id="qrCodeCanvas" width="1560" height="1289"></canvas>
 
-            const canvas = document.getElementById('qrCanvas');
-            const ctx = canvas.getContext('2d');
-            const img = new Image();
-            img.src = 'erwema.jpg'; // 确保图像文件在相同目录中
-            img.onload = function () {
-                ctx.clearRect(0, 0, canvas.width, canvas.height); // 清除画布
-                ctx.drawImage(img, 0, 0);
-
-                const qrDiv = document.createElement('div');
-                new QRCode(qrDiv, {
-                    text: url,
-                    width: 150,
-                    height: 150,
-                    correctLevel: QRCode.CorrectLevel.H
-                });
-
-                setTimeout(() => {
-                    const qrCanvas = qrDiv.querySelector('canvas');
-                    ctx.drawImage(qrCanvas, 127, 127, 150, 150); // 调整位置和大小以覆盖原二维码
-                }, 500); // 确保二维码生成完成
-            }
-        }
-    </script>
+  <script>
+    function generateQRCode() {
+      const refInput = document.getElementById('refInput');
+      const ref = refInput.value;
+      const baseURL = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa7e710795d5adeb3&redirect_uri=https%3A%2F%2Fh5.xiaoguai.net%2Flogin%2F%3Fref%3D';
+      const url = baseURL + encodeURIComponent(ref) + '&response_type=code&scope=snsapi_base#wechat_redirect';
+      
+      const typeNumber = 0;
+      const errorCorrectionLevel = 'L';
+      const qr = qrcode(typeNumber, errorCorrectionLevel);
+      qr.addData(url);
+      qr.make();
+      
+      const canvas = document.getElementById('qrCodeCanvas');
+      const ctx = canvas.getContext('2d');
+      
+      const img = new Image();
+      img.onload = function() {
+        ctx.drawImage(img, 0, 0);
+        
+        const qrCodeSize = 508;
+        const qrCodeX = 127;
+        const qrCodeY = 127;
+        
+        const qrCodeCanvas = document.createElement('canvas');
+        qrCodeCanvas.width = qrCodeSize;
+        qrCodeCanvas.height = qrCodeSize;
+        qr.renderTo2dContext(qrCodeCanvas.getContext('2d'), qrCodeSize);
+        
+        ctx.drawImage(qrCodeCanvas, qrCodeX, qrCodeY);
+      };
+      img.src = 'postimg.jpg';
+    }
+  </script>
 </body>
 </html>
