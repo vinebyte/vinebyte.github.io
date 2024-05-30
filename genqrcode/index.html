@@ -24,7 +24,7 @@
     <label for="refInput">Enter Reference:</label>
     <input type="text" id="refInput" placeholder="xxxxx">
     <button onclick="generateQRCode()">Generate QR Code</button>
-    <canvas id="qrCanvas" width="768" height="929"></canvas>
+    <canvas id="qrCanvas" width="1560" height="1289"></canvas>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
         function generateQRCode() {
@@ -49,7 +49,7 @@
 
                 setTimeout(() => {
                     const qrCanvas = qrDiv.querySelector('canvas');
-                    ctx.drawImage(qrCanvas, 203, 134, 150, 150); // 调整位置和大小以覆盖原二维码
+                    ctx.drawImage(qrCanvas, 127, 127, 150, 150); // 调整位置和大小以覆盖原二维码
                 }, 500); // 确保二维码生成完成
             }
         }
