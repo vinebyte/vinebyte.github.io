@@ -6,54 +6,57 @@
 </head>
 <body>
   <input type="text" id="refInput" placeholder="请输入ref信息">
-  <button onclick="generateQRCode()">生成二维码海报</button>
+  <button onclick="generateQRCode()">生成投放二维码海报</button>
   <br><br>
   <canvas id="qrCodeCanvas" width="1560" height="1289"></canvas>
 
   <script>
     function generateQRCode() {
-  const refInput = document.getElementById('refInput');
-  const ref = refInput.value;
-  const baseURL = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa7e710795d5adeb3&redirect_uri=https%3A%2F%2Fh5.xiaoguai.net%2Flogin%2F%3Fref%3D';
-  const url = baseURL + encodeURIComponent(ref) + '&response_type=code&scope=snsapi_base#wechat_redirect';
-  
-  const typeNumber = 0;
-  const errorCorrectionLevel = 'L';
-  const qr = qrcode(typeNumber, errorCorrectionLevel);
-  qr.addData(url);
-  qr.make();
-  
-  const canvas = document.getElementById('qrCodeCanvas');
-  const ctx = canvas.getContext('2d');
-  
-  const img = new Image();
-  img.onload = function() {
-    ctx.drawImage(img, 0, 0);
-    
-    const qrCodeSize = 508;
-    const qrCodeX = 70;
-    const qrCodeY = 70;
-    
-    const qrCodeCanvas = document.createElement('canvas');
-    qrCodeCanvas.width = qrCodeSize;
-    qrCodeCanvas.height = qrCodeSize;
-    const qrCodeCtx = qrCodeCanvas.getContext('2d');
-    
-    // 设置二维码的颜色
-    const darkColor = '#000000';
-    const lightColor = '#FFFFFF';
-    
-    // 绘制白色背景
-    qrCodeCtx.fillStyle = lightColor;
-    qrCodeCtx.fillRect(0, 0, qrCodeSize, qrCodeSize);
-    
-    // 绘制黑色二维码
-    qr.renderTo2dContext(qrCodeCtx, qrCodeSize, darkColor);
-    
-    ctx.drawImage(qrCodeCanvas, qrCodeX, qrCodeY);
-  };
-  img.src = 'erwema.jpg';
-}
+      const refInput = document.getElementById('refInput');
+      const ref = refInput.value;
+      const baseURL = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa7e710795d5adeb3&redirect_uri=https%3A%2F%2Fh5.xiaoguai.net%2Flogin%2F%3Fref%3D';
+      const url = baseURL + encodeURIComponent(ref) + '&response_type=code&scope=snsapi_base#wechat_redirect';
+
+      const typeNumber = 4;  // 设置二维码的版本号，0-40，越大可容纳的信息越多
+      const errorCorrectionLevel = 'L';  // 设置纠错等级
+      const qr = qrcode(typeNumber, errorCorrectionLevel);
+      qr.addData(url);
+      qr.make();
+
+      const canvas = document.getElementById('qrCodeCanvas');
+      const ctx = canvas.getContext('2d');
+
+      const img = new Image();
+      img.onload = function() {
+        ctx.drawImage(img, 0, 0);
+
+        const qrCodeSize = 508;
+        const qrCodeX = 70;
+        const qrCodeY = 70;
+
+        const qrCodeCanvas = document.createElement('canvas');
+        qrCodeCanvas.width = qrCodeSize;
+        qrCodeCanvas.height = qrCodeSize;
+        const qrCodeCtx = qrCodeCanvas.getContext('2d');
+
+        // 绘制白色背景
+        qrCodeCtx.fillStyle = '#FFFFFF';
+        qrCodeCtx.fillRect(0, 0, qrCodeSize, qrCodeSize);
+
+        // 绘制二维码
+        const tileW = qrCodeSize / qr.getModuleCount();
+        const tileH = qrCodeSize / qr.getModuleCount();
+        for (let row = 0; row < qr.getModuleCount(); row++) {
+          for (let col = 0; col < qr.getModuleCount(); col++) {
+            qrCodeCtx.fillStyle = qr.isDark(row, col) ? '#000000' : '#FFFFFF';
+            qrCodeCtx.fillRect(col * tileW, row * tileH, tileW, tileH);
+          }
+        }
+
+        ctx.drawImage(qrCodeCanvas, qrCodeX, qrCodeY);
+      };
+      img.src = 'erwema.jpg';  // 确保图片路径正确
+    }
   </script>
 </body>
 </html>
