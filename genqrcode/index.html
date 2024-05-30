@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #qrCanvas {
+            position: absolute;
+            top: 150px;
+            left: 35px;
+        }
+    </style>
+</head>
+<body>
+    <h1>QR Code Generator</h1>
+    <label for="refInput">Enter Reference:</label>
+    <input type="text" id="refInput" placeholder="xxxxx">
+    <button onclick="generateQRCode()">Generate QR Code</button>
+    <canvas id="qrCanvas" width="768" height="929"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        function generateQRCode() {
+            const ref = document.getElementById('refInput').value;
+            const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa7e710795d5adeb3&redirect_uri=https%3A%2F%2Fh5.xiaoguai.net%2Flogin%2F%3Fref%3D${ref}&response_type=code&scope=snsapi_base#wechat_redirect`;
+
+            const canvas = document.getElementById('qrCanvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            img.src = '/qr/postimg.jpg';
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0);
+                const qr = new QRCode('qrCanvas', {
+                    text: url,
+                    width: 150,
+                    height: 150,
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                qr._oDrawing._elCanvas.style.display = 'none';
+                const qrImg = qr._oDrawing._elImage;
+                qrImg.onload = function () {
+                    ctx.drawImage(qrImg, 35, 150, 150, 150); // Adjust the position based on your image
+                }
+            }
+        }
+    </script>
+</body>
+</html>
