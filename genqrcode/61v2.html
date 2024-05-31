@@ -16,7 +16,7 @@
       const refInput = document.getElementById('refInput');
       const ref = refInput.value;
       const baseURL = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa7e710795d5adeb3&redirect_uri=https%3A%2F%2Fh5.xiaoguai.net%2Flogin%3Fref%3D';
-      const url = baseURL + encodeURIComponent(ref) + '&response_type=code&scope=snsapi_base#wechat_redirect';
+      const url = baseURL + encodeURIComponent(ref) + '&shareId=61v2&response_type=code&scope=snsapi_base#wechat_redirect';
 
       const typeNumber = 10;  // 增加二维码的版本号
       const errorCorrectionLevel = 'L';  // 设置纠错等级
